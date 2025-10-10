@@ -3,7 +3,7 @@ Make a full broadband event catalogue for the entire Sorsdal deployment. Use the
 """
 
 from obspy.core import UTCDateTime
-from iqvis import data_objects as do
+from cryoquake import data_objects as do
 from obspy.core.inventory import inventory
 import os
 
