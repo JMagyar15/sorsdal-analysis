@@ -3,7 +3,7 @@ waveforms/
 stations/
 spectrograms/
 outputs/
-catalogues/
+#catalogues/
 
 # Python cache
 __pycache__/

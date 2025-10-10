@@ -6,37 +6,53 @@ from obspy.core import UTCDateTime
 from cryoquake import data_objects as do
 from obspy.core.inventory import inventory
 import os
+import pandas as pd
+from pathlib import Path
 
-t1 = UTCDateTime(2017,12,31)
-t2 = UTCDateTime(2018,2,16) #for now, just test with a couple of days to check all is working
+t1 = UTCDateTime(2018,1,1)
+t2 = UTCDateTime(2018,2,15) #for now, just test with a couple of days to check all is working
 
-c_path = '/Users/jaredmagyar/Documents/SorsdalData/catalogues/redo_bbs'
-stat_path = '/Users/jaredmagyar/Documents/SorsdalData/stations/sorsdal_stations.xml'
-w_path = '/Users/jaredmagyar/Documents/SorsdalData/processed'
+#c_path = '/Users/jaredmagyar/Documents/SorsdalData/catalogues/redo_bbs'
+#stat_path = '/Users/jaredmagyar/Documents/SorsdalData/stations/sorsdal_stations.xml'
+#w_path = '/Users/jaredmagyar/Documents/SorsdalData/processed'
 
 
-for path in [c_path]:
-    if not os.path.exists(path):
-        os.mkdir(path)
+root = Path(__file__).parent.parent
+print(root)
+w_path = root / "waveforms"
+c_path = root / "test_catalogues"
+s_path = root / "stations"
+s_file = root / "stations" / "sorsdal_stations.xml" #there were some issues with the downloaded files so use this...
 
-inv = inventory.read_inventory(stat_path,level='response').select(station='BBS??')
+#download waveforms and stations if not already done, put in corresponding paths...
 chunk = do.SeismicChunk(t1,t2,time_offset=7)
+
+#chunk.download_waveforms(str(w_path),str(s_path),'2A','BBS??','','HH?')
+
+inv = inventory.read_inventory(s_file,level='response').select(station='BBS??')
 
 avail_rows = []
 
 for daychunk in chunk(24*60*60):
     daychunk.attach_waveforms(inv,w_path,buffer=60*60) #hour long buffer for filtering and STA/LTA
-    daychunk.filter('highpass',freq=1)
+    #daychunk.filter('highpass',freq=1)
+    daychunk.remove_response(pre_filt=[1,2,45,50],taper=False)
     daychunk.context('detect')
-    daychunk.detect_events(c_path,trigger_type='multistalta',sta=0.2,lta=4,delta_sta=20,delta_lta=20,epsilon=1.3,thr_on=4,thr_off=3,thr_coincidence_sum=2,avg_wave_speed=1.5,thr_event_join=2.0) #needs to be at least 2 to avoid double event IDs - need better way to do this in future...
+    daychunk.detect_events(c_path,trigger_type='multistalta',sta=0.2,lta=2.0,delta_sta=50,delta_lta=50,epsilon=2,thr_on=4,thr_off=3,thr_coincidence_sum=2,avg_wave_speed=1.5,thr_event_join=5.0) #needs to be at least 2 to avoid double event IDs - need better way to do this in future...
 
-# split_stream = daychunk.stream.slice(daychunk.starttime,daychunk.endtime).split()
+#! these seem like the right parameters, but need to get full data off macmini - local waveforms different for some reason?
+"""
+NOW COMPUTE THE DATA AVAILABILITY FOR THE ENTIRE SEASON AND SAVE TO CSV FOR PLOTTING.
+"""
+# avail_rows = []
+
+# chunk.attach_waveforms(inv,w_path)
+# split_stream = chunk.stream.slice(chunk.starttime,chunk.endtime).split()
 
 # for tr in split_stream:
 #     network, station, location, channel = tr.id.split('.')
 #     row = {'Network':network,'Station':station,'Location':location,'Channel':channel,'Start':tr.stats.starttime,'End':tr.stats.endtime}
-#     row = pd.DataFrame(data=row,index=[tr.id])
 #     avail_rows.append(row)
 
-# avail = pd.concat(avail_rows,ignore_index=True)
-# avail.to_csv('stream_availability.csv')
+# avail = pd.DataFrame(data=avail_rows)
+# avail.to_csv('sorsdal_stream_availability.csv')
