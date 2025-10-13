@@ -1,9 +1,7 @@
 # Ignore raw and processed data, outputs
 waveforms/
-stations/
 spectrograms/
 outputs/
-#catalogues/
 
 # Python cache
 __pycache__/
