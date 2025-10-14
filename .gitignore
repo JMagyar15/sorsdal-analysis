@@ -3,6 +3,9 @@ waveforms/
 spectrograms/
 outputs/
 
+scripts/make_sorsdal_envdata.py
+environmental/*.csv
+
 # Python cache
 __pycache__/
 *.pyc

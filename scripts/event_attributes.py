@@ -1,33 +1,27 @@
 import numpy as np
 from obspy.core.inventory import inventory
-from iqvis import data_objects as do
+from cryoquake import data_objects as do
 from obspy.core import UTCDateTime
 import tqdm
 import os
-import glob
-import pandas as pd
-from iqvis import spatial_analysis as sa
+from pathlib import Path
 
-local_path = '/Users/jmagyar/Documents/SorsdalData'
-cloud_path = '/Users/jmagyar/Library/Mobile Documents/com~apple~CloudDocs/Outputs/Icequakes'
 
-sta_lta = False
+root = Path(__file__).parent.parent
+w_path = root / "waveforms"
+c_path = root / "catalogues"
+s_path = root / "stations"
+s_file = root / "stations" / "sorsdal_stations.xml"
 
-c_path = os.path.join(cloud_path,'sorsdal_catalogues')
-stat_path = os.path.join(local_path,'stations/sorsdal_stations.xml')
-w_path = os.path.join(local_path,'waveforms')
-p_path = cloud_path
-class_path = c_path
-
-inv = inventory.read_inventory(stat_path,level='response')
-ref_inv = inv.select(station='REF??')
+inv = inventory.read_inventory(s_file,level='response')
 bbs_inv = inv.select(station='BBS??')
-
 
 t1 = UTCDateTime(2018,1,1)
 t2 = UTCDateTime(2018,2,15)
 
 chunk = do.SeismicChunk(t1,t2)
+
+sta_lta = True #True: sta/lta catalogue, False: template matching catalogue.
 
 
 for daychunk in chunk:
