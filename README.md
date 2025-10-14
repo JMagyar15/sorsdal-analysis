@@ -7,7 +7,7 @@ The scripts in this repository can be used to reproduce the results in "Glacier 
 
 ### Instructions
 
-The scripts and notebooks included here require installation of the 'cryoquake' workflow, available at (LINK). This is under development, but can be installed by cloning/downloading the respository and using ``pip install -e /path/to/cryoquake``. This will eventually be replaced with a more stable installation with included dependencies...stay tuned!
+The scripts and notebooks included here require installation of the 'cryoquake' workflow, available at github.com/JMagyar15/cryoquake. This is under development, but can be installed by cloning/downloading the respository and using ``pip install -e /path/to/cryoquake``. This will eventually be replaced with a more stable installation with included dependencies...stay tuned!
 
 Before running any of the scripts, the Sørsdal data must be downloaded. This can be accessed using the Obspy MassDownloader, or using the ``download_waveforms.py`` script included here. 
 
