@@ -1,9 +1,9 @@
 # Code for "Glacier processes from seismic recordings on Sørsdal Glacier, East Antarctica"
-Jared C. Magyar, 2025
+Jared C. Magyar, 2026
 
 ### Background
 
-The scripts in this repository can be used to reproduce the results in "Glacier processes from seismic recordings on Sørsdal Glacier, East Antarctica", the pre-print of which can be found at https://doi.org/10.31223/X5C73C. It also provides an example end-to-end workflow for using the 'cryoquake' analysis tools, currently under development, and can be found at github.com/JMagyar15/cryoquake.
+The scripts in this repository can be used to reproduce the results in "Glacier processes from seismic recordings on Sørsdal Glacier, East Antarctica", the publication of which can be found at https://doi.org/10.1017/jog.2026.10153. It also provides an example end-to-end workflow for using the 'cryoquake' analysis tools, currently under development, and can be found at github.com/JMagyar15/cryoquake.
 
 ### Instructions
 
