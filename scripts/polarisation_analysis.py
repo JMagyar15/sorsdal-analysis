@@ -1,24 +1,25 @@
 import numpy as np
 from obspy.core.inventory import inventory
-from iqvis import data_objects as do
+from cryoquake import data_objects as do
 from obspy.core import UTCDateTime
 import tqdm
 import os
 import glob
 import pandas as pd
-from iqvis import spatial_analysis as sa
-from iqvis import event_calculation as ec
+from cryoquake import spatial_analysis as sa
+from cryoquake import event_calculation as ec
 from scipy.optimize import minimize
+from pathlib import Path
 
 sta_lta = False
 
-local_path = '/Users/jmagyar/Documents/SorsdalData'
-cloud_path = '/Users/jmagyar/Library/Mobile Documents/com~apple~CloudDocs/Outputs/Icequakes'
+root = Path(__file__).parent.parent
+w_path = root / "waveforms"
+c_path = root / "catalogues"
+s_path = root / "stations"
+stat_path = root / "stations" / "sorsdal_stations.xml"
 
-c_path = os.path.join(cloud_path,'sorsdal_catalogues')
-stat_path = os.path.join(local_path,'stations/sorsdal_stations.xml')
-w_path = os.path.join(local_path,'waveforms')
-p_path = cloud_path
+p_path = root / "outputs"
 class_path = c_path
 
 

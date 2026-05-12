@@ -1,7 +1,7 @@
 import numpy as np
 from obspy.core.inventory import inventory
-from iqvis import data_objects as do
-from iqvis import spatial_analysis as sa
+from cryoquake import data_objects as do
+from cryoquake import spatial_analysis as sa
 from obspy.core import UTCDateTime
 import matplotlib.pyplot as plt
 import obspy
@@ -13,16 +13,18 @@ import os
 import glob
 import pandas as pd
 from scipy.optimize import minimize
+from pathlib import Path
 
-sta_lta = False
 
-local_path = '/Users/jmagyar/Documents/SorsdalData'
-cloud_path = '/Users/jmagyar/Library/Mobile Documents/com~apple~CloudDocs/Outputs/Icequakes'
+sta_lta = False #switch for using sta/lta catalogue or template matching catalogue.
 
-c_path = os.path.join(cloud_path,'sorsdal_catalogues')
-stat_path = os.path.join(local_path,'stations/sorsdal_stations.xml')
-w_path = os.path.join(local_path,'waveforms')
-p_path = cloud_path
+root = Path(__file__).parent.parent
+w_path = root / "waveforms"
+c_path = root / "catalogues"
+s_path = root / "stations"
+stat_path = root / "stations" / "sorsdal_stations.xml"
+
+p_path = root / "outputs"
 class_path = c_path
 
 inv = inventory.read_inventory(stat_path,level='response')
